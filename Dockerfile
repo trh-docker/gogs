@@ -8,4 +8,4 @@ RUN git clone https://github.com/gogs/gogs.git &&\
     make release
 
 FROM debian:stretch-slim
-COPY --from=dev-build /opt/src/src/github.com/gogs/release /opt/
+COPY --from=dev-build /opt/src/src/github.com/gogs/gogs/release /opt/
