@@ -8,7 +8,7 @@ RUN git clone https://github.com/gogs/gogs.git &&\
     make release
 
 
-FROM quay.io/spivegin/tlmbasedebian
+FROM debian:stretch-slim
 WORKDIR /opt/gogs
 COPY --from=dev-build /opt/src/src/github.com/gogs/gogs/release /opt/gogs/
 RUN rm *.zip &&\
