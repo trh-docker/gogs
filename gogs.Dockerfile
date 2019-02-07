@@ -16,4 +16,4 @@ RUN rm *.zip &&\
     apt-get autoclean &&\
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
 
-CMD [ "./opt/gogs web"]
+CMD [ "./opt/gogs", "web"]
