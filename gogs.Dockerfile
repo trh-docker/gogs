@@ -11,7 +11,7 @@ RUN git clone https://github.com/gogs/gogs.git &&\
 
 FROM debian:stretch-slim
 WORKDIR /opt/gogs
-COPY --from=dev-build /opt/src/src/github.com/gogs/gogs/release /opt/gogs/
+COPY --from=dev-build /opt/src/src/github.com/gogs/gogs/release /opt
 RUN rm *.zip &&\
     apt-get autoremove &&\
     apt-get autoclean &&\
