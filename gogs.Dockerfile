@@ -29,17 +29,6 @@ RUN chmod +x /opt/bin/entry.sh && chown tealzead:tealzead /opt/bin/entry.sh &&\
     apt-get autoremove &&\
     apt-get autoclean &&\
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
-RUN addgroup \
-    -S -g 1000 \
-    git && \
-    adduser \
-    -S -H -D \
-    -h /data/git \
-    -s /bin/bash \
-    -u 1000 \
-    -G git \
-    git && \
-    echo "git:kfuet013SqVpvuhIw98l" | chpasswd
 USER tealzead
 ENV USER=tealzead RUN_USER=tealzead
 CMD ["/opt/bin/entry.sh"]
