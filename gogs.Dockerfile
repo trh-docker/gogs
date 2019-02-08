@@ -13,6 +13,7 @@ FROM debian:stretch-slim
 WORKDIR /opt/gogs
 COPY --from=dev-build /opt/src/src/github.com/gogs/gogs/release /opt
 RUN rm /opt/*.zip &&\
+    useradd git && echo git:4rrYEGaasb0l9NNq2I1E | chpasswd &&\
     apt update && apt install -y git &&\
     apt-get autoremove &&\
     apt-get autoclean &&\
