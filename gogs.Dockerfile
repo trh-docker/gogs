@@ -16,7 +16,8 @@ WORKDIR /opt/gogs
 COPY --from=dev-build /opt/src/src/github.com/gogs/gogs/release /opt
 RUN mkdir -p /opt/bin/
 ADD entry.sh /opt/bin/
-RUN rm /opt/*.zip &&\
+RUN chmod +x /opt/bin/entry.sh && chown tealzead:tealzead /opt/bin/entry.sh &&\
+    rm /opt/*.zip &&\
     apt update && apt install -y git &&\
     chown -R tealzead:tealzead /opt/gogs &&\
     mkdir /home/tealzead && chown -R tealzead /home/tealzead &&\
@@ -24,4 +25,4 @@ RUN rm /opt/*.zip &&\
     apt-get autoclean &&\
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
 USER tealzead
-CMD ["entry.sh"]
+CMD ["/opt/bin/entry.sh"]
