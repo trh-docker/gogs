@@ -1,15 +1,15 @@
 FROM quay.io/spivegin/golangnodesj AS dev-build
 WORKDIR /opt/src/src/github.com/gogs/
 ADD Makefile /opt/Makefile
-# ADD https://github.com/gogs/gogs/releases/download/v0.11.86/linux_amd64.zip /opt/
-RUN apt-get update && apt-get install -y zip libpam0g-dev 
+# https://github.com/gogs/gogs/releases/download/v0.11.86/linux_amd64.zip 
 # git clone https://github.com/gogs/gogs.git &&\
+RUN apt-get update && apt-get install -y zip libpam0g-dev 
 
 RUN go get -u -tags "sqlite pam cert" github.com/gogs/gogs &&\
     cd gogs && cp /opt/Makefile . &&\
     npm install -g less &&\
+    go build -tags "sqlite pam cert" &&\
     make release
-RUN cd /opt/ && unzip linux_amd64.zip
 
 FROM debian:stretch-slim
 # adduser --disabled-login --gecos 'Gogs' git
@@ -29,5 +29,17 @@ RUN chmod +x /opt/bin/entry.sh && chown tealzead:tealzead /opt/bin/entry.sh &&\
     apt-get autoremove &&\
     apt-get autoclean &&\
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
+RUN addgroup \
+    -S -g 1000 \
+    git && \
+    adduser \
+    -S -H -D \
+    -h /data/git \
+    -s /bin/bash \
+    -u 1000 \
+    -G git \
+    git && \
+    echo "git:kfuet013SqVpvuhIw98l" | chpasswd
 USER tealzead
+ENV USER=tealzead RUN_USER=tealzead
 CMD ["/opt/bin/entry.sh"]
