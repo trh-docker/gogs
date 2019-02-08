@@ -22,7 +22,6 @@ RUN chmod +x /opt/bin/entry.sh && chown tealzead:tealzead /opt/bin/entry.sh &&\
     rm /opt/*.zip &&\
     apt update && apt install -y git &&\
     chown -R tealzead:tealzead /opt/gogs &&\
-    mkdir /home/tealzead && chown -R tealzead /home/tealzead &&\
     apt-get autoremove &&\
     apt-get autoclean &&\
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
