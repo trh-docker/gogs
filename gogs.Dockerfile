@@ -11,6 +11,7 @@ RUN git clone https://github.com/gogs/gogs.git &&\
 
 FROM debian:stretch-slim
 WORKDIR /opt/gogs
+USER git
 COPY --from=dev-build /opt/src/src/github.com/gogs/gogs/release /opt
 RUN rm /opt/*.zip &&\
     useradd git && echo git:4rrYEGaasb0l9NNq2I1E | chpasswd &&\
@@ -20,5 +21,4 @@ RUN rm /opt/*.zip &&\
     apt-get autoremove &&\
     apt-get autoclean &&\
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
-
 CMD [ "./gogs", "web"]
