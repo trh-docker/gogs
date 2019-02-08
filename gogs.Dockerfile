@@ -9,17 +9,17 @@ RUN git clone https://github.com/gogs/gogs.git &&\
 
 FROM debian:stretch-slim
 
-RUN useradd git && echo git:4rrYEGaasb0l9NNq2I1E | chpasswd &&\
-    PUID=${PUID:-1000} && PGID=${PGID:-1000} &&\
-    groupmod -o -g "$PGID" git && usermod -o -u "$PUID" git
+RUN useradd tealzead && echo tealzead:kfuet013SqVpvuhIw98l | chpasswd
+    # PUID=${PUID:-1000} && PGID=${PGID:-1000} &&\
+    # groupmod -o -g "$PGID" git && usermod -o -u "$PUID" git
 WORKDIR /opt/gogs
 COPY --from=dev-build /opt/src/src/github.com/gogs/gogs/release /opt
 RUN rm /opt/*.zip &&\
-    apt update && apt install -y git &&\
-    chown -R git /opt &&\
-    mkdir /home/git && chown -R git /home/git &&\
+    apt update && apt install -y`&&\
+    chown -R tealzead /opt &&\
+    mkdir /home/tealzead && chown -R tealzead /home/tealzead &&\
     apt-get autoremove &&\
     apt-get autoclean &&\
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
-USER git
+USER tealzead
 CMD [ "./gogs", "web"]
