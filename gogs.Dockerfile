@@ -7,20 +7,18 @@ RUN git clone https://github.com/gogs/gogs.git &&\
     npm install -g less &&\
     make release
 
-
-
 FROM debian:stretch-slim
 
 RUN useradd git && echo git:4rrYEGaasb0l9NNq2I1E | chpasswd &&\
     PUID=${PUID:-1000} && PGID=${PGID:-1000} &&\
     groupmod -o -g "$PGID" git && usermod -o -u "$PUID" git
-USER git
 WORKDIR /opt/gogs
 COPY --from=dev-build /opt/src/src/github.com/gogs/gogs/release /opt
-RUN chown -R git /opt &&\
-    rm /opt/*.zip &&\
+RUN rm /opt/*.zip &&\
     apt update && apt install -y git &&\
+    chown -R git /opt &&\
     apt-get autoremove &&\
     apt-get autoclean &&\
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
+USER git
 CMD [ "./gogs", "web"]
