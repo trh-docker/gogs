@@ -14,12 +14,14 @@ RUN useradd tealzead && echo tealzead:kfuet013SqVpvuhIw98l | chpasswd
     # groupmod -o -g "$PGID" git && usermod -o -u "$PUID" git
 WORKDIR /opt/gogs
 COPY --from=dev-build /opt/src/src/github.com/gogs/gogs/release /opt
+RUN mkdir -p /opt/bin/
+ADD entry.sh /opt/bin/
 RUN rm /opt/*.zip &&\
     apt update && apt install -y git &&\
-    chown -R tealzead /opt &&\
+    chown -R tealzead:tealzead /opt/gogs &&\
     mkdir /home/tealzead && chown -R tealzead /home/tealzead &&\
     apt-get autoremove &&\
     apt-get autoclean &&\
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
 USER tealzead
-CMD [ "./gogs", "web"]
+CMD ["entry.sh"]
