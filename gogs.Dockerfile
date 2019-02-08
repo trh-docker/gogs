@@ -1,12 +1,15 @@
-# FROM quay.io/spivegin/golangnodesj AS dev-build
-# WORKDIR /opt/src/src/github.com/gogs/
-# ADD Makefile /opt/Makefile
-# RUN apt-get update && apt-get install -y zip libpam0g-dev
-# # git clone https://github.com/gogs/gogs.git &&\
-# RUN go get -u -tags "sqlite pam cert" github.com/gogs/gogs &&\
-#     cd gogs && cp /opt/Makefile . &&\
-#     npm install -g less &&\
-#     make release
+FROM quay.io/spivegin/golangnodesj AS dev-build
+WORKDIR /opt/src/src/github.com/gogs/
+ADD Makefile /opt/Makefile
+ADD https://github.com/gogs/gogs/releases/download/v0.11.86/linux_amd64.zip /opt/
+RUN apt-get update && apt-get install -y zip libpam0g-dev 
+# git clone https://github.com/gogs/gogs.git &&\
+
+RUN go get -u -tags "sqlite pam cert" github.com/gogs/gogs &&\
+    cd gogs && cp /opt/Makefile . &&\
+    npm install -g less &&\
+    make release
+RUN cd /opt/ && unzip linux_amd64.zip
 
 FROM debian:stretch-slim
 # adduser --disabled-login --gecos 'Gogs' git
@@ -16,8 +19,8 @@ RUN adduser --disabled-login --gecos 'Gogs' tealzead
     # groupmod -o -g "$PGID" git && usermod -o -u "$PUID" git
 WORKDIR /opt/gogs
 # COPY --from=dev-build /opt/src/src/github.com/gogs/gogs/release /opt
-ADD https://github.com/gogs/gogs/releases/download/v0.11.86/linux_amd64.zip /opt/
-RUN mkdir -p /opt/bin/ && cd /opt/ && unzip linux_amd64.zip 
+COPY --from=dev-build /opt/gogs /opt/
+RUN mkdir -p /opt/bin/ 
 ADD entry.sh /opt/bin/
 RUN chmod +x /opt/bin/entry.sh && chown tealzead:tealzead /opt/bin/entry.sh &&\
     rm /opt/*.zip &&\
