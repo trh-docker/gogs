@@ -17,6 +17,7 @@ COPY --from=dev-build /opt/src/src/github.com/gogs/gogs/release /opt
 RUN rm /opt/*.zip &&\
     apt update && apt install -y git &&\
     chown -R git /opt &&\
+    mkdir /home/git && chown -R git /home/git &&\
     apt-get autoremove &&\
     apt-get autoclean &&\
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
