@@ -15,7 +15,7 @@ RUN useradd tealzead && echo tealzead:kfuet013SqVpvuhIw98l | chpasswd
 WORKDIR /opt/gogs
 COPY --from=dev-build /opt/src/src/github.com/gogs/gogs/release /opt
 RUN rm /opt/*.zip &&\
-    apt update && apt install -y`&&\
+    apt update && apt install -y git &&\
     chown -R tealzead /opt &&\
     mkdir /home/tealzead && chown -R tealzead /home/tealzead &&\
     apt-get autoremove &&\
