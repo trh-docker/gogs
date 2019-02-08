@@ -17,9 +17,9 @@ FROM debian:stretch-slim
 RUN adduser --disabled-login --gecos 'Gogs' tealzead
     # PUID=${PUID:-1000} && PGID=${PGID:-1000} &&\
     # groupmod -o -g "$PGID" git && usermod -o -u "$PUID" git
-WORKDIR /opt/gogs
 # COPY --from=dev-build /opt/src/src/github.com/gogs/gogs/release /opt
 COPY --from=dev-build /opt/gogs /opt/
+WORKDIR /opt/gogs
 RUN mkdir -p /opt/bin/ 
 ADD entry.sh /opt/bin/
 RUN chmod +x /opt/bin/entry.sh && chown tealzead:tealzead /opt/bin/entry.sh &&\
